@@ -10,12 +10,22 @@ const app = express()
 
 // 실제로는 /api 라우트를 처리하는 메소드가 된다.
 app.get('/', function (req, res, next) {
-    const queryObj = req.query
-    if( !queryObj ){
-        res.status(500).json({err:'queryObj 없음'})
+    const { start, end, code } = req.query
+    // if( !queryObj ){
+    //     res.status(500).json({err:'queryObj 없음'})
+    //     return
+    // }
+    if( !start ){
+        res.status(500).json({err:'start 없음'})
+        return
+    }
+
+    if( !code ){
+        res.status(500).json({err:'code 없음'})
+        return
     }
     
-    Crawler.crawlingFromDate(queryObj.start, queryObj.end, '005930', 1).then(data=>{
+    Crawler.crawlingFromDate(start, end, code).then(data=>{
         // res.setHeader("Content-Type", "application/json;charset=utf-8")
         // res.end(data)
         res.setHeader("Content-Type", "application/json")
